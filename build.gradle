@@ -103,3 +103,56 @@ publishing {
         // retrieving dependencies.
     }
 }
+
+// Auto-increment the lower (patch) version in gradle.properties
+import java.util.Properties
+
+def gradlePropertiesFile = file('gradle.properties')
+
+task incrementModVersion {
+    description = 'Increment the patch (last) number of mod_version in gradle.properties and update project.version'
+    doLast {
+        if (!gradlePropertiesFile.exists()) {
+            println "gradle.properties not found at ${gradlePropertiesFile}", "Skipping version increment"
+            return
+        }
+        def props = new Properties()
+        gradlePropertiesFile.withInputStream { stream -> props.load(stream) }
+        def current = props.getProperty('mod_version') ?: project.version.toString()
+        println "Current mod_version: ${current}"
+        def parts = current.tokenize('.')
+        if (parts.size() == 0) {
+            println "Could not parse version '${current}' - expected dot-separated numbers"
+            return
+        }
+        // Try to increment the last numeric segment, if non-numeric append .1
+        def lastIndex = parts.size() - 1
+        try {
+            def lastNum = parts[lastIndex].toInteger()
+            lastNum = lastNum + 1
+            parts[lastIndex] = lastNum.toString()
+        } catch (NumberFormatException e) {
+            // If last segment isn't numeric, append .1
+            parts << '1'
+        }
+        def newVersion = parts.join('.')
+        props.setProperty('mod_version', newVersion)
+        gradlePropertiesFile.withOutputStream { out -> props.store(out, null) }
+        project.version = newVersion
+        println "mod_version bumped to ${newVersion}"
+    }
+}
+
+// A small helper task to print the current version(s)
+task printVersion {
+    description = 'Print project.version and mod_version from gradle.properties (useful for testing increment)'
+    dependsOn incrementModVersion
+    doLast {
+        def modVer = project.findProperty('mod_version') ?: 'undefined'
+        println "project.version=${project.version}"
+        println "mod_version (file)=${modVer}"
+    }
+}
+
+// Ensure resources are processed with the incremented version for builds
+processResources.dependsOn(incrementModVersion)

@@ -110,3 +110,10 @@ PRs are welcome for: migrating to non-deprecated Brain APIs, configuration optio
 
 ## License
 See the included `LICENSE.txt` file.
+
+## Changelog
+A short summary of the latest release is available in `CHANGELOG.md`.
+
+- Current version: `1.0.2` — see `CHANGELOG.md` for full history and notable changes.
+
+For details, open `CHANGELOG.md` in the project root.

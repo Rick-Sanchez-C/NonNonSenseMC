@@ -4,7 +4,7 @@
   "package": "com.quarkz.nonnonsensemc.mixins",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "villager.VillagerEntityMixin"
+    "villager.TradeOfferMixin"
   ],
   "injectors": {
     "defaultRequire": 1
