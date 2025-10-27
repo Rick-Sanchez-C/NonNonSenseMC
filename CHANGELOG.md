@@ -1,4 +1,8 @@
 # 🧾 Changelog — TradeOffer Price System Adjustment
+## [1.0.3] — Added max book level for the Librarian profession
+- Introduced a functionality to always get the highest-level enchanted books from Librarians.
+
+
 
 ## [1.0.3] — Change in handling of `uses` and `maxUses`
 

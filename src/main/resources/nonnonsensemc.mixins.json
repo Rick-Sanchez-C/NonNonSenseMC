@@ -4,6 +4,7 @@
   "package": "com.quarkz.nonnonsensemc.mixins",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "villager.EnchantBookFactoryMixin",
     "villager.TradeOfferMixin"
   ],
   "injectors": {
